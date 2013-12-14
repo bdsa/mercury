@@ -1,5 +1,7 @@
 from django.conf.urls import patterns, include, url
 
+from nexus.views import ContactIndexView
+
 from django.contrib import admin
 admin.autodiscover()
 
@@ -8,7 +10,7 @@ urlpatterns = patterns('',
     # url(r'^$', 'mercury.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 
-    url(r'^$', include('nexus.urls', namespace="nexus")),
-    url(r'^contact/(?P<contact_id>\d+)/$', 'nexus.views.contact_detail', name='contact_detail'),
+    url(r'^$', ContactIndexView.as_view(), name='contact_index'),
+    url(r'^contacts/', include('nexus.urls', namespace="nexus")),
     url(r'^admin/', include(admin.site.urls)),
 )
