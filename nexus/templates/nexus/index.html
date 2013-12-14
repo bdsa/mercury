@@ -1,0 +1,13 @@
+{% if contact_list %}
+    <ul>
+    {% for contact in contact_list %}
+        <li><a href="{% url 'contact_detail' contact.id %}">{{ contact.fullname }}</a> - 
+    {% for role in contact.role_set.all %}
+        {{ role.role }}{% if not forloop.last %},
+        {% endif %}
+    {% endfor %}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>Please add a contact.</p>
+{% endif %}

@@ -1,0 +1,13 @@
+<h1>Contact</h1>
+    {{ contact.fullname }} - 
+    {% for role in contact.role_set.all %}
+        {{ role.role }}{% if not forloop.last %},
+        {% endif %}
+    {% endfor %}
+<br />
+    {{ contact.telephone_mobile }}
+<br />
+    {{ contact.email }}
+<p>
+<a href="{% url 'nexus:index' %}">Home</a>
+</p>
