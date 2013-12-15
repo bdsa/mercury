@@ -4,9 +4,17 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.core.urlresolvers import reverse_lazy
 
+from nexus.forms import ContactForm
 from nexus.models import Contact
 
-class ContactIndexView(generic.ListView):
+class LoginRequiredMixin(object):
+    # Require user to be logged in to see this view
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(LoginRequiredMixin, self).dispatch(*args, **kwargs)
+
+class ContactIndexView(LoginRequiredMixin, generic.ListView):
     template_name = 'nexus/index.html'
     model = Contact
 
@@ -14,11 +22,7 @@ class ContactIndexView(generic.ListView):
         user = self.request.user
         return Contact.objects.filter(owner__in=user.groups.all())
 
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super(ContactIndexView, self).dispatch(*args, **kwargs)
-    
-class ContactView(generic.DetailView):
+class ContactView(LoginRequiredMixin, generic.DetailView):
     model = Contact
     template_name = 'nexus/contact_detail.html'
 
@@ -26,18 +30,22 @@ class ContactView(generic.DetailView):
         user = self.request.user
         return Contact.objects.filter(owner__in=user.groups.all())
 
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super(ContactView, self).dispatch(*args, **kwargs)
-
-class ContactCreate(generic.CreateView):
+class ContactCreate(LoginRequiredMixin, generic.CreateView):
     model = Contact
-    fields = ['forename', 'surname', 'telephone_mobile', 'email']
-
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super(ContactCreate, self).dispatch(*args, **kwargs)
+    form_class = ContactForm
 
     def form_valid(self, form):
         form.instance.owner = self.request.user.groups.all()[0]
         return super(ContactCreate, self).form_valid(form)
+
+class ContactUpdate(LoginRequiredMixin, generic.UpdateView):
+    model = Contact
+    form_class = ContactForm
+
+    def form_valid(self, form):
+        form.instance.owner = self.request.user.groups.all()[0]
+        return super(ContactUpdate, self).form_valid(form)
+
+class ContactDelete(LoginRequiredMixin, generic.DeleteView):
+    model = Contact
+    form_class = ContactForm

@@ -14,5 +14,8 @@
     {{ contact.telephone_mobile }}
 <br />
     {{ contact.email }}
-
+<br />
+    <a href="{% url 'nexus:contact_update' contact.id %}">Edit</a>
+<br />
+    <a href="{% url 'nexus:contact_delete' contact.id %}">Delete</a>
 {% endblock %}
