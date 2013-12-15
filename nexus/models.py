@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import Group, User
 
 # Create your models here.
 class Contact(models.Model):
@@ -6,6 +7,7 @@ class Contact(models.Model):
     surname = models.CharField(max_length=30)
     email = models.EmailField(max_length=254)
     telephone_mobile = models.CharField("Mobile Telephone", max_length=14)
+    owner = models.ForeignKey(Group)
 
     def _get_full_name(self):
         return '%s, %s' % (self.surname, self.forename)
