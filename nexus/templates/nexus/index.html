@@ -1,3 +1,9 @@
+{% extends "nexus/base.html" %}
+
+{% block title %}| Contacts{% endblock %}
+
+{% block content %}
+
 {% if contact_list %}
     <ul>
     {% for contact in contact_list %}
@@ -11,3 +17,5 @@
 {% else %}
     <p>Please add a contact.</p>
 {% endif %}
+
+{% endblock %}

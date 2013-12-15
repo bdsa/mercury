@@ -1,3 +1,9 @@
+{% extends "nexus/base.html" %}
+
+{% block title %}| Contact{% endblock %}
+
+{% block content %}
+
 <h1>Contact</h1>
     {{ contact.fullname }} - 
     {% for role in contact.role_set.all %}
@@ -8,6 +14,5 @@
     {{ contact.telephone_mobile }}
 <br />
     {{ contact.email }}
-<p>
-<a href="{% url 'nexus:contact_index' %}">Home</a>
-</p>
+
+{% endblock %}
