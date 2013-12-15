@@ -17,5 +17,6 @@
 {% else %}
     <p>Please add a contact.</p>
 {% endif %}
-
+<p>
+<a href="{% url 'nexus:contact_create' %}">New Contact</a>
 {% endblock %}

@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.views import generic
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from django.contrib.auth.models import User, Group
+from django.core.urlresolvers import reverse_lazy
 
 from nexus.models import Contact
 
@@ -29,3 +29,15 @@ class ContactView(generic.DetailView):
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(ContactView, self).dispatch(*args, **kwargs)
+
+class ContactCreate(generic.CreateView):
+    model = Contact
+    fields = ['forename', 'surname', 'telephone_mobile', 'email']
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(ContactCreate, self).dispatch(*args, **kwargs)
+
+    def form_valid(self, form):
+        form.instance.owner = self.request.user.groups.all()[0]
+        return super(ContactCreate, self).form_valid(form)
