@@ -4,8 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.core.urlresolvers import reverse_lazy
 
-from nexus.forms import ContactForm
-from nexus.models import Contact
+from nexus.forms import ContactForm, RoleForm
+from nexus.models import Contact, Role
 
 class LoginRequiredMixin(object):
     # Require user to be logged in to see this view
@@ -41,6 +41,11 @@ class ContactCreate(LoginRequiredMixin, generic.CreateView):
 class ContactUpdate(LoginRequiredMixin, generic.UpdateView):
     model = Contact
     form_class = ContactForm
+
+    def get_form_kwargs(self):
+        kwargs = super(ContactUpdate, self).get_form_kwargs()
+        kwargs.update({'request_user': self.request.user})
+        return kwargs
 
     def form_valid(self, form):
         form.instance.owner = self.request.user.groups.all()[0]

@@ -8,7 +8,7 @@
     <ul>
     {% for contact in contact_list %}
         <li><a href="{% url 'nexus:contact_detail' contact.id %}">{{ contact.fullname }}</a> - 
-    {% for role in contact.role_set.all %}
+    {% for role in contact.roles.all %}
         {{ role.role }}{% if not forloop.last %},
         {% endif %}
     {% endfor %}</li>

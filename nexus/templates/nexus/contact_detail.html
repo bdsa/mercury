@@ -6,7 +6,7 @@
 
 <h1>Contact</h1>
     {{ contact.fullname }} - 
-    {% for role in contact.role_set.all %}
+    {% for role in contact.roles.all %}
         {{ role.role }}{% if not forloop.last %},
         {% endif %}
     {% endfor %}

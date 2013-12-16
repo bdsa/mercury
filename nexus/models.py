@@ -3,11 +3,13 @@ from django.db import models
 from django.contrib.auth.models import Group, User
 
 # Create your models here.
+
 class Contact(models.Model):
     forename = models.CharField(max_length=20)
     surname = models.CharField(max_length=30)
     email = models.EmailField(max_length=254)
     telephone_mobile = models.CharField("Mobile Telephone", max_length=25)
+    roles = models.ManyToManyField('Role')
     owner = models.ForeignKey(Group)
 
     def _get_full_name(self):
@@ -22,7 +24,7 @@ class Contact(models.Model):
 
 class Role(models.Model):
     role = models.CharField(max_length=30)
-    contacts = models.ManyToManyField(Contact, blank=True)
+    contacts = models.ManyToManyField('Contact')
     owner = models.ForeignKey(Group)
 
     def __unicode__(self):
