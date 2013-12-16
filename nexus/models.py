@@ -24,7 +24,7 @@ class Contact(models.Model):
 
 class Role(models.Model):
     role = models.CharField(max_length=30)
-    contacts = models.ManyToManyField('Contact')
+#    contacts = models.ManyToManyField('Contact')
     owner = models.ForeignKey(Group)
 
     def __unicode__(self):

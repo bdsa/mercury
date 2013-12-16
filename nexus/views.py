@@ -34,6 +34,7 @@ class ContactCreate(LoginRequiredMixin, generic.CreateView):
     model = Contact
     form_class = ContactForm
 
+    # pass request user to form to filter role choices
     def get_form_kwargs(self):
         kwargs = super(ContactCreate, self).get_form_kwargs()
         kwargs.update({'request_user': self.request.user})
@@ -59,3 +60,11 @@ class ContactUpdate(LoginRequiredMixin, generic.UpdateView):
 class ContactDelete(LoginRequiredMixin, generic.DeleteView):
     model = Contact
     form_class = ContactForm
+
+class RoleIndexView(LoginRequiredMixin, generic.ListView):
+    template_name = 'nexus/role_index.html'
+    model = Role
+
+    def get_queryset(self):
+        user = self.request.user
+        return Role.objects.filter(owner__in=user.groups.all())
