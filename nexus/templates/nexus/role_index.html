@@ -1,0 +1,20 @@
+{% extends "nexus/base.html" %}
+
+{% block title %}| Roles{% endblock %}
+
+{% block content %}
+
+{% if role_list %}
+    <ul>
+    {% for role in role_list %}
+        <li>{{ role.role }} - 
+    {% for contact in role.contact_set.all %}
+        <a href="{% url 'nexus:contact_detail' contact.id %}">{{ contact.fullname }}</a>{% if not forloop.last %},
+        {% endif %}
+    {% endfor %}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>Please add a role.</p>
+{% endif %}
+{% endblock %}

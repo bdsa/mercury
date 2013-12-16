@@ -11,6 +11,8 @@
     <div id="sidebar">
         {% block sidebar %}
             <li><a href="/">Home</a></li>
+            <li><a href="{% url 'nexus:contact_index' %}">Contacts</a></li>
+            <li><a href="{% url 'nexus:role_index' %}">Roles</a></li>
         {% endblock %}
     </div>
 
