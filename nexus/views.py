@@ -34,6 +34,11 @@ class ContactCreate(LoginRequiredMixin, generic.CreateView):
     model = Contact
     form_class = ContactForm
 
+    def get_form_kwargs(self):
+        kwargs = super(ContactCreate, self).get_form_kwargs()
+        kwargs.update({'request_user': self.request.user})
+        return kwargs
+
     def form_valid(self, form):
         form.instance.owner = self.request.user.groups.all()[0]
         return super(ContactCreate, self).form_valid(form)
