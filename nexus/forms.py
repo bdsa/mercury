@@ -17,4 +17,8 @@ class ContactForm(forms.ModelForm):
 class RoleForm(forms.ModelForm):
     class Meta:
         model = Role
-        exclude = ('owner',)
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('request_user') 
+        super(RoleForm, self).__init__(*args, **kwargs)
+        self.fields['owner'].queryset = user.groups.all()

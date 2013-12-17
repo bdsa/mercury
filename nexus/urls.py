@@ -10,4 +10,5 @@ urlpatterns = patterns('',
     url(r'^contacts/(?P<pk>\d+)/edit/$', views.ContactUpdate.as_view(), name='contact_update'),
     url(r'^contacts/(?P<pk>\d+)/delete/$', views.ContactDelete.as_view(success_url='/contacts/'), name='contact_delete'),
     url(r'^roles/$', views.RoleIndexView.as_view(), name='role_index'),
+    url(r'^roles/new/$', views.RoleCreate.as_view(success_url='/roles/'), name='role_create'),
 )

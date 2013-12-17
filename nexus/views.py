@@ -9,10 +9,15 @@ from nexus.models import Contact, Role
 
 class LoginRequiredMixin(object):
     # Require user to be logged in to see this view
-
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(LoginRequiredMixin, self).dispatch(*args, **kwargs)
+
+class AutoOwnerMixin(object):
+    # Use this mixin to automatically set 'owner' to the user's first group
+    def form_valid(self, form):
+        form.instance.owner = self.request.user.groups.all()[0]
+        return super(AutoOwnerMixin, self).form_valid(form)
 
 class ContactIndexView(LoginRequiredMixin, generic.ListView):
     template_name = 'nexus/index.html'
@@ -30,7 +35,7 @@ class ContactView(LoginRequiredMixin, generic.DetailView):
         user = self.request.user
         return Contact.objects.filter(owner__in=user.groups.all())
 
-class ContactCreate(LoginRequiredMixin, generic.CreateView):
+class ContactCreate(LoginRequiredMixin, AutoOwnerMixin, generic.CreateView):
     model = Contact
     form_class = ContactForm
 
@@ -40,22 +45,15 @@ class ContactCreate(LoginRequiredMixin, generic.CreateView):
         kwargs.update({'request_user': self.request.user})
         return kwargs
 
-    def form_valid(self, form):
-        form.instance.owner = self.request.user.groups.all()[0]
-        return super(ContactCreate, self).form_valid(form)
-
-class ContactUpdate(LoginRequiredMixin, generic.UpdateView):
+class ContactUpdate(LoginRequiredMixin, AutoOwnerMixin, generic.UpdateView):
     model = Contact
     form_class = ContactForm
 
+    # pass request user to form to filter role choices
     def get_form_kwargs(self):
         kwargs = super(ContactUpdate, self).get_form_kwargs()
         kwargs.update({'request_user': self.request.user})
         return kwargs
-
-    def form_valid(self, form):
-        form.instance.owner = self.request.user.groups.all()[0]
-        return super(ContactUpdate, self).form_valid(form)
 
 class ContactDelete(LoginRequiredMixin, generic.DeleteView):
     model = Contact
@@ -68,3 +66,13 @@ class RoleIndexView(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         user = self.request.user
         return Role.objects.filter(owner__in=user.groups.all())
+
+class RoleCreate(LoginRequiredMixin, AutoOwnerMixin, generic.CreateView):
+    model = Role
+    form_class = RoleForm
+
+    # pass request user to form to filter owner choices
+    def get_form_kwargs(self):
+        kwargs = super(RoleCreate, self).get_form_kwargs()
+        kwargs.update({'request_user': self.request.user})
+        return kwargs
