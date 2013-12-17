@@ -1,0 +1,18 @@
+{% extends "nexus/base.html" %}
+
+{% block title %}| Event{% endblock %}
+
+{% block content %}
+
+<h1>Event</h1>
+    <p>{{ event.name }} - {{ event.startdate }} - {{ event.enddate }}</p>
+
+    {% if event.booking_set.all %}Bookings{% endif %}
+    {% for booking in event.booking_set.all %}
+       <p>{{ booking.name }}</p>
+    {% endfor %}
+<br />
+    <a href="{% url 'nexus:event_index' %}">Edit</a>
+<br />
+    <a href="{% url 'nexus:event_index' %}">Delete</a>
+{% endblock %}

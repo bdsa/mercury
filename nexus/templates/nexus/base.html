@@ -3,7 +3,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="{% static 'nexus/style.css' %}" />
+    <script src="{% static  'nexus/jquery-1.10.2.min.js' %}"></script>
+    <link href="{% static 'nexus/bootstrap/css/bootstrap.css' %}" rel="stylesheet" type="text/css"/>
+    <script src="{% static 'nexus/bootstrap/js/bootstrap.js' %}"></script>
     <title>Nexus {% block title %}{% endblock %}</title>
 </head>
 
@@ -13,6 +15,7 @@
             <li><a href="/">Home</a></li>
             <li><a href="{% url 'nexus:contact_index' %}">Contacts</a></li>
             <li><a href="{% url 'nexus:role_index' %}">Roles</a></li>
+            <li><a href="{% url 'nexus:event_index' %}">Events</a></li>
         {% endblock %}
     </div>
 

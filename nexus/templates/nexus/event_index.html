@@ -1,0 +1,19 @@
+{% extends "nexus/base.html" %}
+
+{% block title %}| Events{% endblock %}
+
+{% block content %}
+
+{% if event_list %}
+    <ul>
+    {% for event in event_list %}
+        <li><a href="{% url 'nexus:event_detail' event.id %}">{{ event.name }}</a> - {{ event.startdate }} - {{ event.enddate }}
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>Please add an event.</p>
+{% endif %}
+
+<a href="{% url 'nexus:event_create' %}">New Event</a>
+{% endblock %}

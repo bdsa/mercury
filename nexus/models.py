@@ -31,3 +31,24 @@ class Role(models.Model):
 
     class Meta:
         unique_together = ('role', 'owner')
+
+class Event(models.Model):
+    name = models.CharField(max_length=30)
+    owner = models.ForeignKey(Group)
+    startdate = models.DateTimeField()
+    enddate = models.DateTimeField()
+
+    def __unicode__(self):
+        return self.name
+
+class Booking(models.Model):
+    role = models.OneToOneField(Role)
+    contact = models.ForeignKey(Contact)
+    event = models.ForeignKey(Event)
+
+    def _get_name(self):
+        return '%s - %s' % (self.contact.fullname, self.role.role)
+    name = property(_get_name)
+
+    def __unicode__(self):
+        return self.name

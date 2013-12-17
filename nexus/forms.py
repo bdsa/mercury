@@ -1,5 +1,7 @@
-from django import forms
-from nexus.models import Contact, Role
+#from django import forms
+import floppyforms as forms
+
+from nexus.models import Contact, Role, Event
 
 class ContactForm(forms.ModelForm):
 
@@ -22,3 +24,12 @@ class RoleForm(forms.ModelForm):
         user = kwargs.pop('request_user') 
         super(RoleForm, self).__init__(*args, **kwargs)
         self.fields['owner'].queryset = user.groups.all()
+
+class EventForm(forms.ModelForm):
+    class Meta:
+        model = Event
+        exclude = ('owner',)
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('request_user') 
+        super(EventForm, self).__init__(*args, **kwargs)

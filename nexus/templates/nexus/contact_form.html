@@ -1,3 +1,11 @@
-<form action="." method="POST">{{ form.as_p}}{% csrf_token %}
+{% extends "nexus/base.html" %}
+
+{% block title %}| Edit Contact{% endblock %}
+
+{% block content %}
+
+<form action="." method="POST">{{ form.as_table }}{% csrf_token %}
     <input type="submit" value="Submit" />
 </form>
+
+{% endblock %}
