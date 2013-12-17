@@ -11,7 +11,8 @@
     {% for contact in role.contact_set.all %}
         <a href="{% url 'nexus:contact_detail' contact.id %}">{{ contact.fullname }}</a>{% if not forloop.last %},
         {% endif %}
-    {% endfor %}</li>
+    {% endfor %}
+        <a href="{% url 'nexus:role_delete' role.id %}">Delete</a></li>
     {% endfor %}
     </ul>
 {% else %}

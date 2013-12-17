@@ -3,6 +3,7 @@ from django.views import generic
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.core.urlresolvers import reverse_lazy
+from django import forms
 
 from nexus.forms import ContactForm, RoleForm
 from nexus.models import Contact, Role
@@ -76,3 +77,7 @@ class RoleCreate(LoginRequiredMixin, AutoOwnerMixin, generic.CreateView):
         kwargs = super(RoleCreate, self).get_form_kwargs()
         kwargs.update({'request_user': self.request.user})
         return kwargs
+
+class RoleDelete(LoginRequiredMixin, generic.DeleteView):
+    model = Role
+    form_class = RoleForm
