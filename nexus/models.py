@@ -45,7 +45,7 @@ class Event(models.Model):
         return reverse('nexus:event_detail', kwargs={'pk': self.pk})
 
 class Booking(models.Model):
-    role = models.OneToOneField(Role)
+    role = models.ForeignKey(Role)
     contact = models.ForeignKey(Contact, null=True, blank=True)
     event = models.ForeignKey(Event)
 

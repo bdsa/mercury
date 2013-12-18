@@ -10,7 +10,10 @@
     {% if event.booking_set.all %}<h2>Bookings</h2>{% endif %}
     {% for booking in event.booking_set.all %}
        <p>{{ booking.role }}: 
-        {% if booking.contact %}<a href="{% url 'nexus:contact_detail' booking.contact.id %}">{{ booking.contact.fullname }}</a>{% else %}Not yet assigned.{% endif %} - <a href="{% url 'nexus:booking_update' event.id booking.id %}">Edit</a></p>
+        {% if booking.contact %}<a href="{% url 'nexus:contact_detail' booking.contact.id %}">{{ booking.contact.fullname }}</a>{% else %}Not yet assigned.{% endif %} -
+<a href="{% url 'nexus:booking_update' event.id booking.id %}">Edit</a>
+<a href="{% url 'nexus:booking_delete' event.id booking.id %}">X</a>
+</p>
     {% endfor %}
 <br />
     <a href="{% url 'nexus:booking_create' event.id %}">New Booking</a>

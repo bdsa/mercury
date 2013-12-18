@@ -2,10 +2,10 @@ from django.shortcuts import render, get_object_or_404, render_to_response
 from django.views import generic
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import reverse
 from django import forms
 
-from nexus.forms import ContactForm, RoleForm, EventForm, BookingCreateForm, BookingUpdateForm
+from nexus.forms import ContactForm, RoleForm, EventForm, BookingCreateForm, BookingUpdateForm, BookingDeleteForm
 from nexus.models import Contact, Role, Event, Booking
 
 class LoginRequiredMixin(object):
@@ -151,3 +151,10 @@ class BookingUpdate(LoginRequiredMixin, AutoOwnerMixin, generic.UpdateView):
         form.instance.event = Event.objects.get(id=self.kwargs['event_id'])
         form.instance.owner = self.request.user.groups.all()[0]
         return super(BookingUpdate, self).form_valid(form)
+
+class BookingDelete(LoginRequiredMixin, generic.DeleteView):
+    model = Booking
+    form_class = BookingDeleteForm
+
+    def get_success_url(self):
+        return reverse('nexus:event_detail', kwargs = {'pk': self.object.event.id},)

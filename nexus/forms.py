@@ -52,10 +52,13 @@ class BookingCreateForm(forms.ModelForm):
 class BookingUpdateForm(forms.ModelForm):
     class Meta:
         model = Booking
-        fields = ('role', 'contact',)
+        fields = ('contact',)
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('request_user') 
         super(BookingUpdateForm, self).__init__(*args, **kwargs)
-        self.fields['role'].queryset = Role.objects.filter(owner=user.groups.all()[0])
-        self.fields['contact'].queryset = Contact.objects.filter(owner=user.groups.all()[0])
+        self.fields['contact'].queryset = Contact.objects.filter(owner=user.groups.all()[0], roles=self.instance.role.id)
+
+class BookingDeleteForm(forms.ModelForm):
+    class Meta:
+        model = Booking
