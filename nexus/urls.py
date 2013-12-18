@@ -17,4 +17,5 @@ urlpatterns = patterns('',
     url(r'^events/(?P<pk>\d+)/edit/$', views.EventUpdate.as_view(), name='event_update'),
     url(r'^events/new/$', views.EventCreate.as_view(success_url='/events/'), name='event_create'),
     url(r'^events/(?P<pk>\d+)/delete/$', views.EventDelete.as_view(success_url='/events/'), name='event_delete'),
+    url(r'^bookings/new/$', views.BookingCreate.as_view(success_url='/events/'), name='booking_create'),
 )

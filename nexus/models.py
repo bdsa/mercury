@@ -46,7 +46,7 @@ class Event(models.Model):
 
 class Booking(models.Model):
     role = models.OneToOneField(Role)
-    contact = models.ForeignKey(Contact)
+    contact = models.ForeignKey(Contact, null=True, blank=True)
     event = models.ForeignKey(Event)
 
     def _get_name(self):

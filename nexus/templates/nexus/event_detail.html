@@ -7,9 +7,9 @@
 <h1>Event</h1>
     <p>{{ event.name }} - {{ event.startdate }} - {{ event.enddate }}</p>
 
-    {% if event.booking_set.all %}Bookings{% endif %}
+    {% if event.booking_set.all %}<h2>Bookings</h2>{% endif %}
     {% for booking in event.booking_set.all %}
-       <p>{{ booking.name }}</p>
+       <p>{{ booking.role }}: <a href="{% url 'nexus:contact_detail' booking.contact.id %}">{{ booking.contact.fullname }}</a></p>
     {% endfor %}
 <br />
     <a href="{% url 'nexus:event_update' event.id %}">Edit</a>

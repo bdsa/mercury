@@ -5,6 +5,7 @@
 {% block content %}
 
 <h1>Contact</h1>
+<p>
     {{ contact.fullname }} - 
     {% for role in contact.roles.all %}
         {{ role.role }}{% if not forloop.last %},
@@ -14,8 +15,14 @@
     {{ contact.telephone_mobile }}
 <br />
     {{ contact.email }}
-<br />
+</p>
+<p>
     <a href="{% url 'nexus:contact_update' contact.id %}">Edit</a>
 <br />
     <a href="{% url 'nexus:contact_delete' contact.id %}">Delete</a>
+</p>
+{% if contact.booking_set.all.count > 0 %}<h2>Bookings</h2>{% endif %}
+    {% for booking in contact.booking_set.all %}
+       <p>{{ booking.role }}: <a href="{% url 'nexus:event_detail' booking.event.id %}">{{ booking.event.name }}</a> {{ booking.event.startdate }}-{{ booking.event.enddate }}</p>
+    {% endfor %}
 {% endblock %}

@@ -1,7 +1,7 @@
 #from django import forms
 import floppyforms as forms
 
-from nexus.models import Contact, Role, Event
+from nexus.models import Contact, Role, Event, Booking
 
 class ContactForm(forms.ModelForm):
 
@@ -38,3 +38,13 @@ class EventForm(forms.ModelForm):
         if self.cleaned_data.get('startdate') > self.cleaned_data.get('enddate'):
             raise forms.ValidationError("The event's start date must be earlier than its end.")
         return self.cleaned_data
+
+class BookingForm(forms.ModelForm):
+    class Meta:
+        model = Booking
+        fields = ('role',)
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('request_user') 
+        super(BookingForm, self).__init__(*args, **kwargs)
+        self.fields['role'].queryset = Role.objects.filter(owner=user.groups.all()[0])

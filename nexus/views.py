@@ -1,12 +1,12 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, render_to_response
 from django.views import generic
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.core.urlresolvers import reverse_lazy
 from django import forms
 
-from nexus.forms import ContactForm, RoleForm, EventForm
-from nexus.models import Contact, Role, Event
+from nexus.forms import ContactForm, RoleForm, EventForm, BookingForm
+from nexus.models import Contact, Role, Event, Booking
 
 class LoginRequiredMixin(object):
     # Require user to be logged in to see this view
@@ -121,3 +121,13 @@ class EventCreate(LoginRequiredMixin, AutoOwnerMixin, generic.CreateView):
 class EventDelete(LoginRequiredMixin, generic.DeleteView):
     model = Event
     form_class = EventForm
+
+class BookingCreate(LoginRequiredMixin, AutoOwnerMixin, generic.CreateView):
+    model = Booking
+    form_class = BookingForm
+
+    # pass request user to form to filter role choices
+    def get_form_kwargs(self):
+        kwargs = super(BookingCreate, self).get_form_kwargs()
+        kwargs.update({'request_user': self.request.user})
+        return kwargs
