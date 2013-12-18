@@ -12,7 +12,7 @@
        <p>{{ booking.name }}</p>
     {% endfor %}
 <br />
-    <a href="{% url 'nexus:event_index' %}">Edit</a>
+    <a href="{% url 'nexus:event_update' event.id %}">Edit</a>
 <br />
-    <a href="{% url 'nexus:event_index' %}">Delete</a>
+    <a href="{% url 'nexus:event_delete' event.id %}">Delete</a>
 {% endblock %}

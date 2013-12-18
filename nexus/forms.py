@@ -33,3 +33,8 @@ class EventForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('request_user') 
         super(EventForm, self).__init__(*args, **kwargs)
+
+    def clean(self):
+        if self.cleaned_data.get('startdate') > self.cleaned_data.get('enddate'):
+            raise forms.ValidationError("The event's start date must be earlier than its end.")
+        return self.cleaned_data

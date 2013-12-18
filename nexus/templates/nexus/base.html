@@ -10,14 +10,14 @@
 </head>
 
 <body>
-    <div id="sidebar">
-        {% block sidebar %}
-            <li><a href="/">Home</a></li>
-            <li><a href="{% url 'nexus:contact_index' %}">Contacts</a></li>
-            <li><a href="{% url 'nexus:role_index' %}">Roles</a></li>
-            <li><a href="{% url 'nexus:event_index' %}">Events</a></li>
+        <p>
+            <a href="/">Home</a>
+            <a href="{% url 'nexus:contact_index' %}">Contacts</a>
+            <a href="{% url 'nexus:role_index' %}">Roles</a>
+            <a href="{% url 'nexus:event_index' %}">Events</a>
+        </p>
+        {% block header %}
         {% endblock %}
-    </div>
 
     <div id="content">
         {% block content %}{% endblock %}

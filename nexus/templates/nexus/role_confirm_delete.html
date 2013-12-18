@@ -1,5 +1,13 @@
+{% extends "nexus/base.html" %}
+
+{% block title %}| Contacts{% endblock %}
+
+{% block content %}
+
 <h1>Confirm deletion of {{ role.role }}</h1>
 <form action="." method="post">{% csrf_token %}
     <input type="submit" value="Delete" />
 </form>
 <a href="{% url 'nexus:role_index' %}">Back</a>
+
+{% endblock %}

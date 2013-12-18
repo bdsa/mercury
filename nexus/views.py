@@ -117,3 +117,7 @@ class EventCreate(LoginRequiredMixin, AutoOwnerMixin, generic.CreateView):
         kwargs = super(EventCreate, self).get_form_kwargs()
         kwargs.update({'request_user': self.request.user})
         return kwargs
+
+class EventDelete(LoginRequiredMixin, generic.DeleteView):
+    model = Event
+    form_class = EventForm
