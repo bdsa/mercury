@@ -5,7 +5,7 @@ from django.utils.decorators import method_decorator
 from django.core.urlresolvers import reverse_lazy
 from django import forms
 
-from nexus.forms import ContactForm, RoleForm, EventForm, BookingForm
+from nexus.forms import ContactForm, RoleForm, EventForm, BookingCreateForm, BookingUpdateForm
 from nexus.models import Contact, Role, Event, Booking
 
 class LoginRequiredMixin(object):
@@ -124,10 +124,30 @@ class EventDelete(LoginRequiredMixin, generic.DeleteView):
 
 class BookingCreate(LoginRequiredMixin, AutoOwnerMixin, generic.CreateView):
     model = Booking
-    form_class = BookingForm
+    form_class = BookingCreateForm
 
     # pass request user to form to filter role choices
     def get_form_kwargs(self):
         kwargs = super(BookingCreate, self).get_form_kwargs()
         kwargs.update({'request_user': self.request.user})
         return kwargs
+
+    def form_valid(self, form):
+        form.instance.event = Event.objects.get(id=self.kwargs['event_id'])
+        form.instance.owner = self.request.user.groups.all()[0]
+        return super(BookingCreate, self).form_valid(form)
+
+class BookingUpdate(LoginRequiredMixin, AutoOwnerMixin, generic.UpdateView):
+    model = Booking
+    form_class = BookingUpdateForm
+
+    # pass request user to form to filter role choices
+    def get_form_kwargs(self):
+        kwargs = super(BookingUpdate, self).get_form_kwargs()
+        kwargs.update({'request_user': self.request.user})
+        return kwargs
+
+    def form_valid(self, form):
+        form.instance.event = Event.objects.get(id=self.kwargs['event_id'])
+        form.instance.owner = self.request.user.groups.all()[0]
+        return super(BookingUpdate, self).form_valid(form)

@@ -39,12 +39,23 @@ class EventForm(forms.ModelForm):
             raise forms.ValidationError("The event's start date must be earlier than its end.")
         return self.cleaned_data
 
-class BookingForm(forms.ModelForm):
+class BookingCreateForm(forms.ModelForm):
     class Meta:
         model = Booking
         fields = ('role',)
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('request_user') 
-        super(BookingForm, self).__init__(*args, **kwargs)
+        super(BookingCreateForm, self).__init__(*args, **kwargs)
         self.fields['role'].queryset = Role.objects.filter(owner=user.groups.all()[0])
+
+class BookingUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Booking
+        fields = ('role', 'contact',)
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('request_user') 
+        super(BookingUpdateForm, self).__init__(*args, **kwargs)
+        self.fields['role'].queryset = Role.objects.filter(owner=user.groups.all()[0])
+        self.fields['contact'].queryset = Contact.objects.filter(owner=user.groups.all()[0])

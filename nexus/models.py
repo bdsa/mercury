@@ -55,3 +55,6 @@ class Booking(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('nexus:event_detail', kwargs={'pk': self.event.id})
