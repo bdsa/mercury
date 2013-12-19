@@ -1,0 +1,17 @@
+{% extends "nexus/base.html" %}
+
+{% block title %}| Programme{% endblock %}
+
+{% block content %}
+
+<h1>Programme</h1>
+    <p>{{ programme.name }}
+        Delivery Date: {{ programme.deliverydate }}
+        Transmission Date: {{ programme.transmissiondate }}</p>
+
+    {% if programme.event_set.all %}<h2>Events</h2>{% endif %}
+    {% for event in programme.event_set.all %}
+       <p>{{ event.name }}: 
+</p>
+    {% endfor %}
+{% endblock %}

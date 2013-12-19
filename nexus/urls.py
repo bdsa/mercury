@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse
 from nexus import views
 
 urlpatterns = patterns('',
+    url(r'^$', views.ContactIndexView.as_view(), name='index'),
     url(r'^$', views.ContactIndexView.as_view(), name='contact_index'),
     url(r'^contacts/(?P<pk>\d+)/$', views.ContactView.as_view(), name='contact_detail'),
     url(r'^contacts/new/$', views.ContactCreate.as_view(), name='contact_create'),
@@ -20,4 +21,7 @@ urlpatterns = patterns('',
     url(r'^events/(?P<event_id>\d+)/bookings/new/$', views.BookingCreate.as_view(), name='booking_create'),
     url(r'^events/(?P<event_id>\d+)/bookings/(?P<pk>\d+)/edit/$', views.BookingUpdate.as_view(), name='booking_update'),
     url(r'^events/(?P<event_id>\d+)/bookings/(?P<pk>\d+)/delete/$', views.BookingDelete.as_view(), name='booking_delete'),
+    url(r'^programmes/$', views.ProgrammeIndexView.as_view(), name='prog_index'),
+    url(r'^programmes/new/$', views.ProgrammeCreate.as_view(success_url='/programmes/'), name='prog_create'),
+    url(r'^programmes/(?P<pk>\d+)/$', views.ProgrammeView.as_view(), name='prog_detail'),
 )

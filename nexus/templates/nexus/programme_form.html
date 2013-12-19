@@ -1,0 +1,11 @@
+{% extends "nexus/base.html" %}
+{{ form.media }}
+{% block title %}| Programme{% endblock %}
+
+{% block content %}
+
+<form action="." method="POST">{{ form.as_table }}{% csrf_token %}
+    <input type="submit" value="Submit" />
+</form>
+
+{% endblock %}

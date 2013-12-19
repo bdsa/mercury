@@ -5,8 +5,8 @@ from django.utils.decorators import method_decorator
 from django.core.urlresolvers import reverse
 from django import forms
 
-from nexus.forms import ContactForm, RoleForm, EventForm, BookingCreateForm, BookingUpdateForm, BookingDeleteForm
-from nexus.models import Contact, Role, Event, Booking
+from nexus.forms import ContactForm, RoleForm, EventForm, BookingCreateForm, BookingUpdateForm, BookingDeleteForm, ProgrammeForm
+from nexus.models import Contact, Role, Event, Booking, Programme
 
 class LoginRequiredMixin(object):
     # Require user to be logged in to see this view
@@ -158,3 +158,29 @@ class BookingDelete(LoginRequiredMixin, generic.DeleteView):
 
     def get_success_url(self):
         return reverse('nexus:event_detail', kwargs = {'pk': self.object.event.id},)
+
+class ProgrammeIndexView(LoginRequiredMixin, generic.ListView):
+    template_name = 'nexus/programme_index.html'
+    model = Programme
+
+    def get_queryset(self):
+        user = self.request.user
+        return Programme.objects.filter(owner__in=user.groups.all())
+
+class ProgrammeCreate(LoginRequiredMixin, AutoOwnerMixin, generic.CreateView):
+    model = Programme
+    form_class = ProgrammeForm
+
+    # pass request user to form to filter role choices
+    def get_form_kwargs(self):
+        kwargs = super(ProgrammeCreate, self).get_form_kwargs()
+        kwargs.update({'request_user': self.request.user})
+        return kwargs
+
+class ProgrammeView(LoginRequiredMixin, generic.DetailView):
+    model = Programme
+    template_name = 'nexus/programme_detail.html'
+
+    def get_queryset(self):
+        user = self.request.user
+        return Programme.objects.filter(owner__in=user.groups.all())

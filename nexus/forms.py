@@ -1,7 +1,7 @@
 #from django import forms
 import floppyforms as forms
 
-from nexus.models import Contact, Role, Event, Booking
+from nexus.models import Contact, Role, Event, Booking, Programme
 
 class ContactForm(forms.ModelForm):
 
@@ -73,3 +73,17 @@ class BookingUpdateForm(forms.ModelForm):
 class BookingDeleteForm(forms.ModelForm):
     class Meta:
         model = Booking
+
+class ProgrammeForm(forms.ModelForm):
+    class Meta:
+        model = Programme
+        exclude = ('owner',)
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('request_user') 
+        super(ProgrammeForm, self).__init__(*args, **kwargs)
+
+    def clean(self):
+        if self.cleaned_data.get('deliverydate') > self.cleaned_data.get('transmissiondate'):
+            raise forms.ValidationError("The programme's transmission date cannot be before its delivery date.")
+        return self.cleaned_data

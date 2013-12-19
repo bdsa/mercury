@@ -37,6 +37,7 @@ class Event(models.Model):
     owner = models.ForeignKey(Group)
     startdate = models.DateTimeField()
     enddate = models.DateTimeField()
+    programme = models.ForeignKey('Programme')
 
     def __unicode__(self):
         return self.name
@@ -58,3 +59,17 @@ class Booking(models.Model):
 
     def get_absolute_url(self):
         return reverse('nexus:event_detail', kwargs={'pk': self.event.id})
+
+class Programme(models.Model):
+    title = models.CharField(max_length=50)
+    name = models.CharField(max_length=30)
+    owner = models.ForeignKey(Group)
+    deliverydate = models.DateTimeField()
+    transmissiondate = models.DateTimeField()
+    #bookings?
+
+    def __unicode__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('nexus:event_detail', kwargs={'pk': self.pk})
