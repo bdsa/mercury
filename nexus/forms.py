@@ -59,6 +59,16 @@ class BookingUpdateForm(forms.ModelForm):
         super(BookingUpdateForm, self).__init__(*args, **kwargs)
         self.fields['contact'].queryset = Contact.objects.filter(owner=user.groups.all()[0], roles=self.instance.role.id)
 
+    def clean(self):
+        newbookingstartdate = self.instance.event.startdate
+        newbookingenddate =  self.instance.event.enddate
+        contact = self.cleaned_data.get('contact')
+
+        for booking in contact.booking_set.all():
+            if (booking.event.startdate < newbookingstartdate < booking.event.enddate) or (booking.event.startdate < newbookingenddate < booking.event.enddate):
+                raise forms.ValidationError("This booking conflicts with another for the same contact: %(ebooking)s" % {'ebooking': booking.name})
+        return self.cleaned_data
+
 class BookingDeleteForm(forms.ModelForm):
     class Meta:
         model = Booking
